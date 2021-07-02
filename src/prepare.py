@@ -6,10 +6,7 @@ import random
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-import datatable as dt
-from pathlib import Path
 from scipy import sparse
-import matplotlib.pyplot as plt
 from collections import Counter, defaultdict
 from sklearn.utils.extmath import randomized_svd
 from gensim.models.callbacks import CallbackAny2Vec
@@ -104,6 +101,7 @@ testb_df = pd.read_csv(os.path.join(COMPETITION_DATA_PATH, 'test_b.csv'))
 
 user_df = pd.read_csv(os.path.join(COMPETITION_DATA_PATH, 'user_action.csv'))
 feed_df = pd.read_csv(os.path.join(COMPETITION_DATA_PATH, 'feed_info.csv'))
+fillna_bgm(feed_df)
 feed_df['keyword_list'] = feed_df.apply(merge_keyword, axis=1)
 feed_df['tag_list'] = feed_df.apply(merge_tag, axis=1)
 

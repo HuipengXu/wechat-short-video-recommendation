@@ -1,19 +1,12 @@
-import os
 import gc
-import time
 import json
 import pickle
-import argparse
 from tqdm import tqdm, trange
 import pickle5 as pk5
-from collections import defaultdict
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.metrics import roc_auc_score
 from sklearn.decomposition import PCA
-from lightgbm.sklearn import LGBMClassifier
 
 from src.common_path import *
 
@@ -174,40 +167,6 @@ def reduce_mem(df, cols):
     print('{:.2f} Mb, {:.2f} Mb ({:.2f} %)'.format(start_mem, end_mem, 100 * (start_mem - end_mem) / start_mem))
     gc.collect()
     return df
-
-
-# 从官方baseline里面抽出来的评测函数
-def uAUC(labels, preds, user_id_list):
-    """Calculate user AUC"""
-    user_pred = defaultdict(list)
-    user_truth = defaultdict(list)
-    for idx, truth in enumerate(labels):
-        user_id = user_id_list[idx]
-        pred = preds[idx]
-        truth = labels[idx]
-        user_pred[user_id].append(pred)
-        user_truth[user_id].append(truth)
-
-    user_flag = defaultdict(lambda: False)
-    for user_id in set(user_id_list):
-        truths = user_truth[user_id]
-        flag = False
-        # 若全是正样本或全是负样本，则flag为False
-        for i in range(len(truths) - 1):
-            if truths[i] != truths[i + 1]:
-                flag = True
-                break
-        user_flag[user_id] = flag
-
-    total_auc = 0.0
-    size = 0.0
-    for user_id in user_flag:
-        if user_flag[user_id]:
-            auc = roc_auc_score(np.asarray(user_truth[user_id]), np.asarray(user_pred[user_id]))
-            total_auc += auc
-            size += 1.0
-    user_auc = float(total_auc) / size
-    return user_auc
 
 
 # 读取训练集

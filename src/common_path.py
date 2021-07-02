@@ -25,6 +25,13 @@ SUBMISSION_PATH = os.path.join(DATA_ROOT, 'submission')
 # tfidf-kws
 TFIDF_KWS_PATH = os.path.join(DATA_ROOT, 'tfidf_kws')
 
-for path in locals():
-    if 'PATH' in path:
-        os.makedirs(path, exist_ok=True)
+
+def main():
+    locs = locals().copy()
+    for name, path in locs.items():
+        if 'PATH' in name:
+            os.makedirs(path, exist_ok=True)
+
+
+if __name__ == '__main__':
+    main()

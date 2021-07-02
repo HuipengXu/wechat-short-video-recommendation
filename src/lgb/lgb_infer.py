@@ -1,11 +1,12 @@
-import argparse
-
-import numpy as np
 import pandas as pd
 import lightgbm as lgb
 
 from src.common_path import *
-from src.lgb_prepare import y_list, play_cols
+
+y_list = ['read_comment', 'like', 'click_avatar', 'forward', 'favorite', 'comment', 'follow']
+play_cols = [
+    'is_finish', 'play_times', 'play', 'stay'
+]
 
 test_df = pd.read_csv(os.path.join(TRAIN_TEST_DATA_PATH, 'lgb_test.csv'))
 cols = [f for f in test_df.columns if f not in ['date_'] + play_cols + y_list]
