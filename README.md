@@ -52,3 +52,58 @@
 
 ## 4. 模型及特征
 
+### 1. LightGBM
+
+* 参数 1：
+  * learning_rate: 0.01
+  * n_estimators: 5000
+  * num_leaves: 49
+  * subsample: 0.65
+  * colsample_bytree: 0.65
+  * random_state: 2024
+  * eval_metric: auc
+  * early_stoppping_rounds: 100
+* 参数 2：
+  * learning_rate: 0.02
+  * n_estimators: 6000
+  * num_leaves: 49
+  * subsample: 0.65
+  * colsample_bytree: 0.65
+  * random_state: 3000
+  * eval_metric: auc
+  * early_stoppping_rounds: 100
+* 特征
+  * 原始特征 (7 个)
+    * userid
+    * feedid
+    * device
+    * authorid
+    * videoplayseconds
+    * play
+    * stay
+  * 视频相关信息转换特征 (2 个)
+    * is_finished: 播放时长大于视频时长表示完成播放
+    * play_times: 播放时长除以视频时长
+  * 统计特征 (52 个)
+    * userid、feedid、authorid、userid 与 authorid：(64 个)
+      * 历史 5 天出现的次数
+      * 历史 5 天的播放完成率
+      * 历史 5 天的播放次数、播放时长、停留时长的最大值和均值
+      * 历史 5 天 4 种动作的正样本数量和发生率
+    * userid、feedid、authorid 的全局出现次数 (3 个)
+    * userid 和 feedid 、userid 和 authorid 各自在对方 group 中 id 的个数 (4 个)
+    * userid 和 authorid 共现的次数以及共现比例 (3 个)
+    * userid 播放时长的均值
+    * authorid 播放时长的均值
+    * authorid 对应的 feedid 数量
+  * SVD 特征 (192 个)
+    * userid 与 feedid 的奇异值分解 (64 维)
+    * userid 与 authorid 的奇异值分解 (16 维)
+    * userid 与 keyword  的奇异值分解 (16 维)
+    * userid 与 tag  的奇异值分解 (16 维)
+  * DeepWalk 特征 (256)
+    * userid 与 feedid  (64 维)
+    * userid 与 authorid  (64 维)
+  * feed embedding 的 PCA 降维 (64 维)
+  * 词级别 description、ocr、asr 经过 tfidf 权重筛选后的关键字词向量之和 (200 维 PCA 降维到 16 维)
+

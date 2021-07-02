@@ -63,8 +63,7 @@ play_cols = [
 ]
 
 print('Reading data ...')
-train = pd.read_csv(os.path.join(TRAIN_TEST_DATA_PATH, 'lgb_train.csv')).sample(frac=0.2)
-test = pd.read_csv(os.path.join(TRAIN_TEST_DATA_PATH, 'lgb_test.csv'), nrows=1000)
+train = pd.read_csv(os.path.join(TRAIN_TEST_DATA_PATH, 'lgb_train.csv'))
 
 cols = [f for f in train.columns if f not in ['date_'] + play_cols + y_list]
 print(train[cols].shape)

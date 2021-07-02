@@ -1,0 +1,1 @@
+python -m src.lgb.lgb_infer

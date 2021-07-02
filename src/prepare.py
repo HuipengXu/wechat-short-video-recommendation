@@ -1,4 +1,3 @@
-import os
 import gc
 import json
 import pickle
@@ -7,10 +6,10 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from scipy import sparse
+from gensim.models.word2vec import Word2Vec
 from collections import Counter, defaultdict
 from sklearn.utils.extmath import randomized_svd
 from gensim.models.callbacks import CallbackAny2Vec
-from gensim.models.word2vec import LineSentence, Word2Vec
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from src.common_path import *
