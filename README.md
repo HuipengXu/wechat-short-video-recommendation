@@ -72,19 +72,14 @@
   * random_state: 3000
   * eval_metric: auc
   * early_stoppping_rounds: 100
-* 特征
-  * 原始特征 (7 个)
+* 特征 (610 个)
+  * 原始特征 (5个)
     * userid
     * feedid
     * device
     * authorid
     * videoplayseconds
-    * play
-    * stay
-  * 视频相关信息转换特征 (2 个)
-    * is_finished: 播放时长大于视频时长表示完成播放
-    * play_times: 播放时长除以视频时长
-  * 统计特征 (52 个)
+  * 统计特征 (77 个)
     * userid、feedid、authorid、userid 与 authorid：(64 个)
       * 历史 5 天出现的次数
       * 历史 5 天的播放完成率
@@ -106,4 +101,17 @@
     * userid 与 authorid  (64 维)
   * feed embedding 的 PCA 降维 (64 维)
   * 词级别 description、ocr、asr 经过 tfidf 权重筛选后的关键字词向量之和 (200 维 PCA 降维到 16 维)
+
+## 5. 模型结果
+
+| stage |  model   | weight_uauc | read_comment |   like   | click_avatar | forward  |
+| :---: | :------: | :---------: | :----------: | :------: | :----------: | :------: |
+| 离线  |   lgb1   |  0.672614   |   0.648805   | 0.645578 |   0.731963   | 0.730256 |
+| 离线  |   lgb2   |  0.670604   |   0.647515   | 0.646236 |   0.728114   | 0.721045 |
+| 离线  |   nn1    |             |              |          |              |          |
+| 离线  |   nn2    |             |              |          |              |          |
+| 离线  |   nn3    |             |              |          |              |          |
+| 离线  |   nn4    |             |              |          |              |          |
+| 离线  |   nn5    |             |              |          |              |          |
+| 在线  | ensemble |  0.682792   |   0.658657   | 0.655265 |   0.752349   | 0.722799 |
 
