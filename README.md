@@ -12,6 +12,7 @@
 
 ## 2. 代码结构
 
+```shell
 .
 ├── README.md
 ├── data
@@ -34,15 +35,16 @@
 ├── init.sh
 ├── requirements.txt
 ├── src
-│   ├── \_\_init\_\_.py
+│   ├── __init__.py
 │   ├── common_path.py
 │   ├── lgb
-│   │   ├── \_\_init\_\_.py
+│   │   ├── __init__.py
 │   │   ├── lgb_infer.py
 │   │   ├── lgb_prepare.py
 │   │   └── lgb_train.py
 │   └── prepare.py
 └── train.sh
+```
 
 ## 3. 运行流程
 
