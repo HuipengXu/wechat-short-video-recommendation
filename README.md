@@ -104,16 +104,71 @@
   * feed embedding 的 PCA 降维 (64 维)
   * 词级别 description、ocr、asr 经过 tfidf 权重筛选后的关键字词向量之和 (200 维 PCA 降维到 16 维)
 
+
+### 1. NN
+
+* 参数 1：
+  * learning_rate: 0.01
+  * batch_size: 512
+  * l2_reg_embedding 0.1
+  * l2 0.0001
+  * epochs 3
+  * seed 12
+* 参数 2：
+  * learning_rate: 0.01
+  * batch_size: 512
+  * l2_reg_embedding 0.1
+  * l2 0.0001
+  * epochs 3
+  * seed 13
+* 参数 3：
+  * learning_rate: 0.01
+  * batch_size: 512
+  * l2_reg_embedding 0.1
+  * l2 0.0001
+  * epochs 3
+  * seed 14
+* 参数 4：
+  * learning_rate: 0.01
+  * batch_size: 512
+  * l2_reg_embedding 0.1
+  * l2 0.0001
+  * epochs 3
+  * seed 15
+* 参数 5：
+  * learning_rate: 0.01
+  * batch_size: 512
+  * l2_reg_embedding 0.1
+  * l2 0.0001
+  * epochs 3
+  * seed 16
+  
+* 特征 (768 个)
+  * 原始特征 (5个)
+    * userid
+    * feedid
+    * device
+    * authorid
+    * videoplayseconds
+    * keyword_list
+    * tag_list
+  * SVD 特征 (128 个)
+    * userid 与 feedid 的奇异值分解 (64 维)
+  * DeepWalk 特征 (128个)
+    * userid 与 feedid  (64 维)
+  * feed embedding (512 维)
+
+  
 ## 5. 模型结果
 
 | stage |  model   | weight_uauc | read_comment |   like   | click_avatar | forward  |
 | :---: | :------: | :---------: | :----------: | :------: | :----------: | :------: |
 | 离线  |   lgb1   |  0.672614   |   0.648805   | 0.645578 |   0.731963   | 0.730256 |
 | 离线  |   lgb2   |  0.670604   |   0.647515   | 0.646236 |   0.728114   | 0.721045 |
-| 离线  |   nn1    |             |              |          |              |          |
-| 离线  |   nn2    |             |              |          |              |          |
-| 离线  |   nn3    |             |              |          |              |          |
-| 离线  |   nn4    |             |              |          |              |          |
-| 离线  |   nn5    |             |              |          |              |          |
+| 离线  |   nn1    |  0.685342   |   0.663729   | 0.661672 |   0.735029   | 0.743429 |
+| 离线  |   nn2    |  0.684505   |   0.662413   | 0.661523 |   0.736941   | 0.736950 |
+| 离线  |   nn3    |  0.682537   |   0.658422   | 0.660000 |   0.737261   | 0.737161 |
+| 离线  |   nn4    |  0.685410   |   0.659312   | 0.660831 |   0.744362   | 0.745632 |
+| 离线  |   nn5    |  0.685820   |   0.660341   | 0.659931 |   0.745821   | 0.745400 |
 | 在线  | ensemble |  0.682792   |   0.658657   | 0.655265 |   0.752349   | 0.722799 |
 
