@@ -86,6 +86,19 @@ def build_tag_and_kw_vocab(data, col):
     save_json(f'./data/uid_{col}_svd/{col}_token2id.json', token2id)
 
 
+def build_tag_and_kw_vocab_for_nn(data, col):
+    """
+    一个 bug，误把 a 榜测试集用来统计 tag 和 kw，复赛修复
+    """
+    counter = Counter()
+    for row in tqdm(data):
+        tokens = row.split(';')
+        counter.update(tokens)
+    unique_tokens = [token for token, _ in counter.most_common()]
+    token2id = {token: i for i, token in enumerate(unique_tokens)}
+    save_json(os.path.join(KW_TAG_VOCAB_PATH, f'{col}_token2id.json'), token2id)
+
+
 def build_kw_tag_inter_matrix(total_df, row_item, col_item, row_vocab, col_vocab):
     matrix = np.zeros((len(row_vocab), len(col_vocab)))
     for _, row in tqdm(total_df.iterrows(), total=len(total_df), desc='Building interaction matrix'):
@@ -107,6 +120,9 @@ feed_df['tag_list'] = feed_df.apply(merge_tag, axis=1)
 merge_df = pd.merge(user_df, feed_df, how='left', on='feedid')
 testa_merge_df = pd.merge(testa_df, feed_df, how='left', on='feedid')
 testb_merge_df = pd.merge(testb_df, feed_df, how='left', on='feedid')
+
+build_tag_and_kw_vocab_for_nn(testa_merge_df.keyword_list.tolist(), 'keyword')
+build_tag_and_kw_vocab_for_nn(testa_merge_df.tag_list.tolist(), 'tag')
 
 merge_df.to_csv(os.path.join(TRAIN_TEST_DATA_PATH, 'nn_train.csv'), index=False, encoding='utf8', sep=',')
 testb_merge_df.to_csv(os.path.join(TRAIN_TEST_DATA_PATH, 'nn_test.csv'), index=False, encoding='utf8', sep=',')

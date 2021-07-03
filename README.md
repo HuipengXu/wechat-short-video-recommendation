@@ -1,14 +1,18 @@
 ## 1. 环境配置
-* pandas==1.0.5
-* tqdm==4.47.0
-* matplotlib==3.2.2
-* scipy==1.5.0
-* numpy==1.20.1
-* datatable==0.11.1
-* gensim==4.0.1
+* numba==0.53.1
+* scipy==1.4.1
+* numpy==1.18.5
 * lightgbm==3.2.1
+* comet_ml==3.10.0
+* transformers==4.3.3
+* tqdm==4.60.0
 * pickle5==0.0.11
+* gensim==4.0.1
+* torch==1.8.0
+* pandas==1.1.5
+* datatable==1.0.0
 * scikit_learn==0.24.2
+
 
 ## 2. 代码结构
 
@@ -16,34 +20,43 @@
 .
 ├── README.md
 ├── data
-│   ├── deepwalk
-│   ├── desc_ocr_asr_200d
-│   ├── desc_ocr_asr_char_200d
-│   ├── models
-│   ├── processed_data
-│   ├── submission
-│   ├── tfidf_kws
-│   ├── uid_aid_svd
-│   ├── uid_bgm_singer_id_svd
-│   ├── uid_bgm_song_id_svd
-│   ├── uid_fid_svd
-│   ├── uid_keyword_list_svd
-│   ├── uid_tag_list_svd
+│   ├── deepwalk, 随机游走得到的个原始 id 特征的 embedding
+│   ├── desc_ocr_asr_200d, 使用原始特征 description、ocr、asr 预训练的词向量
+│   ├── desc_ocr_asr_char_200d, 使用原始特征字级别的 description、ocr、asr 预训练的词向量
+│   ├── models, 训练好的模型文件
+│   ├── processed_data, 经过预处理的训练测试文件
+│   ├── submission, 模型推理得到的预测结果，包括单模型结果和融合结果
+│   ├── tfidf_kws, 使用 tfidf 得到的 description、ocr、asr 的关键字
+│   ├── uid_aid_svd, userid 和 feedid 的奇异值分解向量
+│   ├── uid_bgm_singer_id_svd, userid 和 bgm_singer_id 的奇异值分解向量
+│   ├── uid_bgm_song_id_svd, userid 和 bgm_song_id 的奇异值分解向量
+│   ├── uid_fid_svd, userid 和 feedid 的奇异值分解向量
+│   ├── uid_keyword_list_svd, userid 和 keyword_list 的奇异值分解向量
+│   ├── uid_tag_list_svd, userid 和 tag_list 的奇异值分解向量
 │   └── wedata
-│       └── wechat_algo_data1
-├── inference.sh
-├── init.sh
-├── requirements.txt
+│       └── wechat_algo_data1, 官方比赛数据
+├── inference.sh, 推理启动脚本
+├── init.sh, 环境初始化脚本
+├── requirements.txt, python 库版本
 ├── src
-│   ├── __init__.py
-│   ├── common_path.py
-│   ├── lgb
-│   │   ├── __init__.py
-│   │   ├── lgb_infer.py
-│   │   ├── lgb_prepare.py
-│   │   └── lgb_train.py
-│   └── prepare.py
-└── train.sh
+│   ├── __init__.py
+│   ├── common_path.py, 生成数据目录
+│   ├── ensemble.py, 融合结果代码
+│   ├── lgb
+│   │   ├── __init__.py
+│   │   ├── lgb_infer.py, lgb 推理代码
+│   │   ├── lgb_prepare.py, lgb 数据准备代码
+│   │   └── lgb_train.py, lgb 训练文件
+│   ├── nn
+│   │   ├── __init__.py
+│   │   ├── activation.py, 激活函数代码
+│   │   ├── args.py, 超参代码
+│   │   ├── multideepfm4wx.py, nn 模型代码
+│   │   ├── test.py, nn 推理代码
+│   │   ├── train.py, nn 训练代码
+│   │   └── utils.py, nn 辅助函数代码
+│   └── prepare.py, 全局特征代码
+└── train.sh, nn 和 lgb 训练启动脚本
 ```
 
 ## 3. 运行流程
@@ -105,7 +118,7 @@
   * 词级别 description、ocr、asr 经过 tfidf 权重筛选后的关键字词向量之和 (200 维 PCA 降维到 16 维)
 
 
-### 1. NN
+### 2. NN
 
 * 参数 1：
   * learning_rate: 0.01

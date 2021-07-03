@@ -19,6 +19,8 @@ DEEPWALK_PATH = os.path.join(DATA_ROOT, 'deepwalk')
 W2V_PATH = os.path.join(DATA_ROOT, 'desc_ocr_asr_200d')
 W2V_CHAR_PATH = os.path.join(DATA_ROOT, 'desc_ocr_asr_char_200d')
 
+KW_TAG_VOCAB_PATH = os.path.join(DATA_ROOT, 'kw_tag_vocab')
+
 MODEL_PATH = os.path.join(DATA_ROOT, 'models')
 SUBMISSION_PATH = os.path.join(DATA_ROOT, 'submission')
 
@@ -27,8 +29,8 @@ TFIDF_KWS_PATH = os.path.join(DATA_ROOT, 'tfidf_kws')
 
 
 def main():
-    locs = locals().copy()
-    for name, path in locs.items():
+    paths = globals().copy()
+    for name, path in paths.items():
         if 'PATH' in name:
             os.makedirs(path, exist_ok=True)
 
